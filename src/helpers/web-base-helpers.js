@@ -1,13 +1,18 @@
 import React from 'react';
 
-export async function getNavLinks() {
-  console.info(
-    'Requesting navigation links from CMS'
-  );
-  await delay(1800);
+// Wrap the 'getNavLinks' in a 'React.cache', so it does the work once and shares it 
+// with both the 'SiteHeader', and the 'SiteFooter'
+export const getNavLinks = React.cache(
+  async function getNavLinks() {
+    console.info(
+      'Requesting navigation links from CMS'
+    );
+    // put in some randomness
+    await delay(1800 + Math.random() * 2000);
 
-  return LINKS;
-}
+    return LINKS;
+  }
+);
 
 const delay = (ms) =>
   new Promise((resolve) =>

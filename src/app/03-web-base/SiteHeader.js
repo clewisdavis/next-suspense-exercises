@@ -4,10 +4,7 @@ import Link from 'next/link';
 import { getNavLinks } from '@/helpers/web-base-helpers';
 
 async function SiteHeader() {
-  let navLinks = await getNavLinks();
 
-  // Only show the first 4 links in the header.
-  navLinks = navLinks.slice(0, 4);
 
   return (
     <header className="site-header">
@@ -15,6 +12,21 @@ async function SiteHeader() {
         WebBase
       </Link>
       <nav>
+        <React.Suspense>
+          <NavLinks />
+        </React.Suspense>
+      </nav>
+    </header>
+  );
+}
+
+// Create a NavLinks Component
+async function NavLinks() {
+  let navLinks = await getNavLinks();
+
+  // Only show the first 4 links in the header.
+  navLinks = navLinks.slice(0, 4);  
+  return (
         <ol className="header-nav-links">
           {navLinks.map(
             ({ slug, label, href, type }) => (
@@ -28,10 +40,8 @@ async function SiteHeader() {
               </li>
             )
           )}
-        </ol>
-      </nav>
-    </header>
-  );
+        </ol>    
+  )
 }
 
 export default SiteHeader;
